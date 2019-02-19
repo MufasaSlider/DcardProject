@@ -71,7 +71,15 @@
         .repositoryContainer{
             color: antiquewhite;
         }
-        
+        .repos-link{
+            text-decoration: none;
+            color: antiquewhite;
+        }
+        .repos-link:hover {
+            text-decoration:underline;
+            background-color:#DAB155;
+            color:black;
+            }
         
     </style>
 </head>
@@ -98,7 +106,7 @@
     </main>
 
 
-    
+
     <script>
         const inputValue = document.querySelector("#search");
         const searchButton = document.querySelector(".searchButton");
@@ -113,10 +121,7 @@
                 `https://api.github.com/search/repositories?q=${repositories}
                 language:assembly?client_id=${client_id}&client_secret=${client_secret}&page=${nowPage}`
             );
-            ///${user}?client_id=${client_id}&client_secret=${client_secret}
-            //curl https://api.github.com/search/repositories?q=tetris+language:assembly&sort=stars&order=desc
-
-            //https://api.github.com/search/issues?q=stress+test+label:bug+language:python+state:closed&page=2
+            //https://api.github.com/search/repositories?q=tetris+language:assembly&sort=stars&order=desc
 
 
             const data = await api_call.json();
@@ -137,28 +142,28 @@
                     searchNum.innerHTML = `Total Repository Results : ${res.data.total_count}`;
 
                     TotalPage = (res.data.total_count / 30) + 1;
-                    if (TotalPage>nowPage) {
-                        
+                    if (TotalPage > nowPage) {
+
                     }
                     for (let i = 0; i < res.data.items.length; i++) {
 
                         //console.log(res.data.items[i].full_name);
                         //console.log(i);
-                        repositoryContainer.innerHTML += 
-                        `
-                            <h2>${res.data.items[i].full_name}</h2>
+                        repositoryContainer.innerHTML +=
+                            `
+                            <h2><a href="https://github.com/${res.data.items[i].full_name}" class="repos-link">${res.data.items[i].full_name}<a></h2>
                         `;
 
                     }
-                    if (TotalPage>=nowPage) {
+                    if (TotalPage >= nowPage) {
                         repositoryContainer.innerHTML +=
-                        `<h3 class="pageBottom">此頁結束 <br>
+                            `<h3 class="pageBottom">此頁結束 <br>
                         <hr>
                         </h3>`;
-                    }else{
-                        repositoryContainer.innerHTML +=`<h2>以上為所有符合的repository搜尋結果</h2>`;
+                    } else {
+                        repositoryContainer.innerHTML += `<h2>以上為所有符合的repository搜尋結果</h2>`;
                     }
-                    
+
 
                 })
 
@@ -166,6 +171,7 @@
 
         function runScript(e) {
             if (e.keyCode == 13) {
+                repositoryContainer.innerHTML ="";
                 showData(nowPage);
             }
 
@@ -184,28 +190,28 @@
 
         searchButton.addEventListener("click", () => {
             //console.log(inputValue.value);
+            repositoryContainer.innerHTML ="";
             showData(nowPage);
 
             //console.log(nowPage);
         })
 
 
-        
+
         //var nowHeight=0;
         //var nowHeightIndex=1;
-        window.onscroll=(ev)=>{
-            
-            if ((window.innerHeight + document.body.scrollTop) >=(document.body.scrollHeight) && window.scrollY>500){
+        window.onscroll = (ev) => {
+
+            if ((window.innerHeight + document.body.scrollTop) >= (document.body.scrollHeight) && window.scrollY >
+                500) {
                 //console.log(window.innerHeight + document.body.scrollTop);
                 //console.log(document.body.scrollHeight);
-                
+
                 //console.log("loadMore");
-                
+
                 loadMore();
             }
         }
-        
-        
     </script>
 </body>
 
